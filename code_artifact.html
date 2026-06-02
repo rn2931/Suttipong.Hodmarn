@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บทเรียนออนไลน์: การเปลี่ยนแปลงของเทคโนโลยี (ว22104)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome for modern icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Sarabun', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f3ff',
+                            100: '#e1e7fe',
+                            500: '#4f46e5',
+                            600: '#4338ca',
+                            700: '#3730a3',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Card Flip 3D Transitions */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        
+        /* Smooth Custom Transitions */
+        .tab-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Custom Scrollbar for modern feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans selection:bg-indigo-200">
+
+    <!-- Top Header Banner & Brand -->
+    <header class="bg-gradient-to-r from-indigo-700 via-primary-600 to-indigo-800 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-4">
+                <div class="bg-white/20 p-2.5 rounded-2xl backdrop-blur-md border border-white/10 shadow-inner">
+                    <i class="fa-solid fa-laptop-code text-3xl text-yellow-300"></i>
+                </div>
+                <div>
+                    <span class="bg-yellow-400 text-indigo-950 text-xs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">ว22104</span>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5">การเปลี่ยนแปลงของเทคโนโลยี</h1>
+                    <p class="text-xs text-indigo-100 font-medium">การออกแบบและเทคโนโลยี 2 (อ้างอิงเนื้อหา อจท.)</p>
+                </div>
+            </div>
+            
+            <div class="flex flex-col items-end text-center sm:text-right bg-black/10 px-4 py-2 rounded-xl border border-white/5">
+                <p class="text-xs text-indigo-200">จัดทำโดย</p>
+                <p class="text-sm font-semibold text-white">ว่าที่ ร.ต.สุทธิพงศ์ โหดหมาน</p>
+                <p class="text-[10px] text-indigo-200">โรงเรียนหาดใหญ่รัฐประชาสรรค์ สพม.สงขลา สตูล</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Interactive Tabs -->
+    <nav class="bg-white border-b border-slate-200 sticky top-[76px] sm:top-[84px] z-40 shadow-sm">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="flex justify-between overflow-x-auto no-scrollbar py-2 gap-2">
+                <button onclick="switchTab('content')" id="tab-content" class="tab-btn flex-1 min-w-[100px] py-3 px-2 text-center font-medium text-sm rounded-xl flex flex-col items-center gap-1.5 transition-all duration-200 bg-primary-50 text-primary-600 border border-primary-100">
+                    <i class="fa-solid fa-book-open text-base sm:text-lg"></i>
+                    <span>บทเรียนหลัก</span>
+                </button>
+                <button onclick="switchTab('flashcard')" id="tab-flashcard" class="tab-btn flex-1 min-w-[100px] py-3 px-2 text-center font-medium text-sm rounded-xl flex flex-col items-center gap-1.5 transition-all duration-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100">
+                    <i class="fa-solid fa-clone text-base sm:text-lg"></i>
+                    <span>บัตรคำเรียนรู้</span>
+                </button>
+                <button onclick="switchTab('vocab')" id="tab-vocab" class="tab-btn flex-1 min-w-[100px] py-3 px-2 text-center font-medium text-sm rounded-xl flex flex-col items-center gap-1.5 transition-all duration-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100">
+                    <i class="fa-solid fa-spell-check text-base sm:text-lg"></i>
+                    <span>คลังคำศัพท์</span>
+                </button>
+                <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn flex-1 min-w-[100px] py-3 px-2 text-center font-medium text-sm rounded-xl flex flex-col items-center gap-1.5 transition-all duration-200 text-slate-500 hover:text-slate-800 hover:bg-slate-100">
+                    <i class="fa-solid fa-circle-question text-base sm:text-lg"></i>
+                    <span>แบบทดสอบ</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-6 sm:py-8">
+
+        <!-- Tab 1: Lesson Content -->
+        <section id="panel-content" class="tab-panel block space-y-6">
+            <!-- Course Hero Summary -->
+            <div class="bg-gradient-to-br from-indigo-500 to-primary-600 rounded-3xl p-6 sm:p-8 text-white shadow-md relative overflow-hidden">
+                <div class="absolute right-0 bottom-0 opacity-10 pointer-events-none transform translate-y-6 translate-x-6">
+                    <i class="fa-solid fa-gears text-[240px]"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl">
+                    <h2 class="text-2xl sm:text-3xl font-bold mb-3">เข้าใจการเปลี่ยนผ่านของเทคโนโลยี</h2>
+                    <p class="text-sm sm:text-base leading-relaxed text-indigo-100">
+                        ทำไมเทคโนโลยีที่ใช้อยู่ในปัจจุบัน ถึงมีหน้าตาที่เปลี่ยนแปลงไปจากอดีตอย่างสิ้นเชิง? มาร่วมกันเจาะลึกวิเคราะห์สาเหตุ ปัจจัย และระบบกลไกที่มีผลต่อความก้าวหน้าและการเปลี่ยนแปลงทางนวัตกรรมไปพร้อมๆ กัน
+                    </p>
+                    <div class="mt-6 flex flex-wrap gap-3">
+                        <span class="bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5">
+                            <i class="fa-solid fa-bolt text-yellow-300"></i> ความต้องการของมนุษย์
+                        </span>
+                        <span class="bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5">
+                            <i class="fa-solid fa-triangle-exclamation text-orange-300"></i> การแก้ปัญหา
+                        </span>
+                        <span class="bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5">
+                            <i class="fa-solid fa-flask text-cyan-300"></i> ความก้าวหน้าทางวิศวกรรม
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Topics Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-100 flex items-center justify-center text-primary-600 mb-4 text-xl font-bold">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">1. ความต้องการของมนุษย์</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        เมื่อมนุษย์มีประชากรเพิ่มมากขึ้น ความต้องการในการดำรงชีวิตเพื่อความรอด ปลอดภัย ตลอดจนอำนวยความสะดวกสบายจึงมีมากขึ้นอย่างต่อเนื่อง จึงนำมาซึ่งการคิดค้นสิ่งประดิษฐ์ใหม่ๆ 
+                    </p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition">
+                    <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 mb-4 text-xl font-bold">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">2. ข้อจำกัดและปัญหา</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        ปัญหาภัยพิบัติธรรมชาติ โรคระบาด ขีดจำกัดทางเวลา หรือผลกระทบจากเทคโนโลยีแบบเดิม (เช่น มลพิษจากเชื้อเพลิงฟอสซิล) ล้วนเป็นแรงขับให้จำเป็นต้องหาเทคโนโลยีสะอาดมาเปลี่ยนผ่านเพื่อทดแทน
+                    </p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200/80 hover:shadow-md transition">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600 mb-4 text-xl font-bold">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">3. ความก้าวหน้าของศาสตร์</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        ความก้าวหน้าอย่างก้าวกระโดดในวัสดุศาสตร์ (Materials Science) คอมพิวเตอร์ขั้นสูง ปัญญาประดิษฐ์ และฟิสิกส์ประยุกต์ ช่วยทำให้สิ่งประดิษฐ์ในอุดมคติที่ยากต่อการสร้าง เกิดขึ้นจริงได้และราคาเข้าถึงง่าย
+                    </p>
+                </div>
+            </div>
+
+            <!-- Interactive Study Timeline/Comparison -->
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200">
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2 text-indigo-950">
+                    <i class="fa-solid fa-arrow-right-arrow-left text-primary-500"></i> วิวัฒนาการความก้าวหน้าและการเปลี่ยนแปลง
+                </h3>
+                <div class="space-y-6">
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <div class="flex items-center gap-4 w-full md:w-1/3">
+                            <span class="w-8 h-8 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-xs">A</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-800">ระบบการเดินทางทางบก</h4>
+                                <p class="text-xs text-slate-500">ยุคดั้งเดิม</p>
+                            </div>
+                        </div>
+                        <div class="text-center text-slate-400 font-bold hidden md:block">→</div>
+                        <div class="w-full md:w-1/2 p-3 bg-white border border-slate-200 rounded-lg shadow-sm flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 font-bold text-xs">EV</div>
+                                <div>
+                                    <p class="text-sm font-semibold">รถยนต์ขับเคลื่อนพลังงานไฟฟ้า (EV)</p>
+                                    <p class="text-xs text-slate-500">ทดแทนรถยนต์น้ำมัน เพื่อลดก๊าซคาร์บอนและประหยัดพลังงาน</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <div class="flex items-center gap-4 w-full md:w-1/3">
+                            <span class="w-8 h-8 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-xs">B</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-800">การจัดเก็บและบริหารข้อมูล</h4>
+                                <p class="text-xs text-slate-500">ยุคดั้งเดิม</p>
+                            </div>
+                        </div>
+                        <div class="text-center text-slate-400 font-bold hidden md:block">→</div>
+                        <div class="w-full md:w-1/2 p-3 bg-white border border-slate-200 rounded-lg shadow-sm flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 font-bold text-xs">CL</div>
+                                <div>
+                                    <p class="text-sm font-semibold">การเก็บข้อมูลผ่านระบบ Cloud Storage</p>
+                                    <p class="text-xs text-slate-500">ทดแทนการจดบันทึกลงสมุดหรือแผ่นดิสก์ เข้าถึงได้ทุกที่ทุกเวลา</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100">
+                        <div class="flex items-center gap-4 w-full md:w-1/3">
+                            <span class="w-8 h-8 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-xs">C</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-800">ระบบการสื่อสารและเครือข่าย</h4>
+                                <p class="text-xs text-slate-500">ยุคดั้งเดิม</p>
+                            </div>
+                        </div>
+                        <div class="text-center text-slate-400 font-bold hidden md:block">→</div>
+                        <div class="w-full md:w-1/2 p-3 bg-white border border-slate-200 rounded-lg shadow-sm flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center text-indigo-600 font-bold text-xs">5G</div>
+                                <div>
+                                    <p class="text-sm font-semibold">เครือข่ายไร้สายความเร็วสูง 5G / 6G</p>
+                                    <p class="text-xs text-slate-500">เปลี่ยนจากการส่งโทรเลขหรือส่งเสียง สู่การส่งข้อมูลเสมือนจริงแบบเรียลไทม์</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Key Lesson Takeaway -->
+            <div class="bg-indigo-50 rounded-2xl p-6 border border-indigo-100 flex flex-col sm:flex-row items-start gap-4">
+                <span class="bg-indigo-600 text-white rounded-xl p-3 flex items-center justify-center text-lg shadow-sm shrink-0">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                </span>
+                <div>
+                    <h4 class="font-bold text-indigo-950 mb-1">สิ่งสำคัญที่ควรรู้ (ตามแนวทาง อจท.)</h4>
+                    <p class="text-sm text-slate-700 leading-relaxed">
+                        การเลือกใช้และพัฒนาเทคโนโลยี ไม่ได้ขึ้นอยู่กับความทันสมัยแต่เพียงอย่างเดียว แต่จะต้องคำนึงถึงผลกระทบอย่างรอบด้าน ทั้งทางด้านเศรษฐกิจ สังคม ทรัพยากรธรรมชาติ และสิ่งแวดล้อม เพื่อการขับเคลื่อนทางเทคโนโลยีที่ยังประโยชน์สูงสุดอย่างเป็นรูปธรรม
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 2: Interactive Flashcards -->
+        <section id="panel-flashcard" class="tab-panel hidden space-y-6">
+            <div class="text-center max-w-lg mx-auto mb-4">
+                <h2 class="text-2xl font-bold text-indigo-950 mb-1">บัตรคำปริศนา (Flashcards)</h2>
+                <p class="text-sm text-slate-500">ท้าทายตนเองโดยการทดลองเดาคำตอบด้วยการคลิกพลิกการ์ดเพื่อตรวจสอบความถูกต้อง!</p>
+            </div>
+
+            <!-- Card Showcase Container -->
+            <div class="flex flex-col items-center justify-center max-w-md mx-auto">
+                <!-- 3D Card wrapper -->
+                <div class="w-full h-80 perspective-1000 cursor-pointer" onclick="flipCard()">
+                    <div id="flashcard-inner" class="w-full h-full transform-style-3d transition-transform duration-500 relative rounded-3xl shadow-lg border border-slate-200">
+                        
+                        <!-- Front Face -->
+                        <div class="absolute inset-0 bg-white rounded-3xl backface-hidden flex flex-col justify-between p-8 border-t-8 border-indigo-600">
+                            <div class="flex justify-between items-center text-slate-400">
+                                <span class="text-xs font-semibold tracking-wider text-primary-500 uppercase">บัตรคำถาม</span>
+                                <i class="fa-solid fa-lightbulb text-yellow-400 animate-pulse text-xl"></i>
+                            </div>
+                            <div class="flex-grow flex items-center justify-center text-center">
+                                <p id="flashcard-front-text" class="text-xl font-bold text-slate-800 leading-relaxed">
+                                    กำลังดาวน์โหลดคำถาม...
+                                </p>
+                            </div>
+                            <div class="text-center">
+                                <span class="inline-flex items-center text-xs text-indigo-500 font-medium hover:underline">
+                                    คลิกที่บัตรเพื่อพลิกดูคำตอบ <i class="fa-solid fa-arrows-rotate ml-1"></i>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <!-- Back Face -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-indigo-700 to-primary-800 text-white rounded-3xl backface-hidden rotate-y-180 flex flex-col justify-between p-8">
+                            <div class="flex justify-between items-center text-indigo-300">
+                                <span class="text-xs font-semibold tracking-wider uppercase text-yellow-300">เฉลยคำตอบ</span>
+                                <i class="fa-solid fa-circle-check text-emerald-400 text-xl"></i>
+                            </div>
+                            <div class="flex-grow flex items-center justify-center text-center">
+                                <p id="flashcard-back-text" class="text-lg font-medium leading-relaxed text-indigo-50">
+                                    กำลังประมวลคำตอบ...
+                                </p>
+                            </div>
+                            <div class="text-center">
+                                <span class="inline-flex items-center text-xs text-indigo-300 font-medium hover:underline">
+                                    คลิกที่บัตรเพื่อกลับไปที่คำถาม <i class="fa-solid fa-arrows-rotate ml-1"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Navigation Controls -->
+                <div class="flex items-center justify-between w-full mt-8 bg-white p-3 rounded-2xl shadow-sm border border-slate-200/80">
+                    <button onclick="prevCard()" class="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-indigo-600 transition flex items-center gap-1.5 rounded-lg hover:bg-slate-50">
+                        <i class="fa-solid fa-circle-arrow-left text-lg"></i> ก่อนหน้า
+                    </button>
+                    
+                    <span id="card-progress" class="text-sm font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
+                        1 / 10
+                    </span>
+
+                    <button onclick="nextCard()" class="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-indigo-600 transition flex items-center gap-1.5 rounded-lg hover:bg-slate-50">
+                        ถัดไป <i class="fa-solid fa-circle-arrow-right text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Shuffle Button -->
+                <button onclick="shuffleCards()" class="mt-4 inline-flex items-center gap-2 px-5 py-2 text-xs font-bold text-slate-600 bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 rounded-full transition shadow-inner">
+                    <i class="fa-solid fa-shuffle"></i> สลับตำแหน่งการ์ดทั้งหมด
+                </button>
+            </div>
+        </section>
+
+        <!-- Tab 3: Vocabulary Directory -->
+        <section id="panel-vocab" class="tab-panel hidden space-y-6">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-indigo-950">พจนานุกรมคำศัพท์เทคโนโลยี (15 คำ)</h2>
+                    <p class="text-sm text-slate-500">รวมคำศัพท์ที่พบบ่อยและมีความสำคัญในหลักสูตร ว22104</p>
+                </div>
+                <!-- Search Box -->
+                <div class="relative w-full md:w-80">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="vocab-search" oninput="filterVocab()" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-primary-500/30 focus:border-primary-500 text-sm" placeholder="พิมพ์เพื่อค้นหาคำศัพท์หรือความหมาย...">
+                </div>
+            </div>
+
+            <!-- Vocabulary Cards List -->
+            <div id="vocab-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- Dynamically populated vocabulary words will render here -->
+            </div>
+            
+            <!-- Speech synthesizer warning details -->
+            <div class="text-center py-4 text-xs text-slate-400 bg-slate-100/60 rounded-xl">
+                💡 <span class="font-medium">คำแนะนำ:</span> คลิกที่ปุ่ม <i class="fa-solid fa-volume-high text-indigo-500"></i> ลำโพงหลังคำศัพท์เพื่อฟังสำเนียงการอ่านออกเสียงภาษาอังกฤษผ่านบราวเซอร์ของท่าน
+            </div>
+        </section>
+
+        <!-- Tab 4: Interactive Assessment Quiz -->
+        <section id="panel-quiz" class="tab-panel hidden space-y-6">
+            <!-- Screen 1: Quiz Home/Welcome -->
+            <div id="quiz-intro-screen" class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm max-w-2xl mx-auto text-center space-y-6">
+                <div class="w-20 h-20 bg-indigo-50 text-primary-500 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
+                    <i class="fa-solid fa-clipboard-question"></i>
+                </div>
+                <div>
+                    <span class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">แบบวัดผลการเรียนรู้หลังเรียน</span>
+                    <h3 class="text-2xl font-bold text-indigo-950 mt-3">แบบทดสอบ เรื่อง การเปลี่ยนแปลงของเทคโนโลยี</h3>
+                    <p class="text-sm text-slate-500 mt-2 max-w-md mx-auto leading-relaxed">
+                        ทดสอบระดับสติปัญญาและความเข้าใจด้วยแบบทดสอบปรนัยทั้งหมด 10 ข้อ หลังทำเสร็จระบบจะวิเคราะห์ประเมินผลคะแนนและความเชี่ยวชาญให้ท่านทันที!
+                    </p>
+                </div>
+                <div class="border-t border-slate-100 pt-6 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-slate-600">
+                    <span class="flex items-center gap-2 font-medium">
+                        <i class="fa-regular fa-clock text-indigo-500"></i> ไม่จำกัดเวลาทำสอบ
+                    </span>
+                    <span class="flex items-center gap-2 font-medium">
+                        <i class="fa-regular fa-square-check text-indigo-500"></i> ปรนัย 10 ข้อ (4 ตัวเลือก)
+                    </span>
+                </div>
+                <div>
+                    <button onclick="startQuiz()" class="px-8 py-3.5 bg-primary-600 text-white rounded-2xl font-bold hover:bg-primary-700 hover:-translate-y-0.5 transition shadow-lg shadow-indigo-600/20 active:translate-y-0 w-full sm:w-auto">
+                        เริ่มทำแบบทดสอบแบบโต้ตอบ <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Screen 2: Dynamic Question Screen -->
+            <div id="quiz-question-screen" class="hidden bg-white rounded-3xl border border-slate-200 shadow-sm max-w-2xl mx-auto overflow-hidden">
+                <!-- Progress Header -->
+                <div class="bg-slate-50 border-b border-slate-100 p-4 sm:p-6 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-bold text-primary-500 uppercase tracking-wide">คำถาม</span>
+                        <h4 id="question-number-title" class="text-sm font-bold text-indigo-950">ข้อที่ 1 จาก 10</h4>
+                    </div>
+                    <div class="text-right">
+                        <span id="quiz-score-badge" class="bg-emerald-50 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full">คะแนนที่ได้: 0</span>
+                    </div>
+                </div>
+
+                <!-- Custom Progress Bar -->
+                <div class="w-full bg-slate-100 h-1.5">
+                    <div id="quiz-progress-inner" class="bg-primary-500 h-1.5 transition-all duration-300" style="width: 10%"></div>
+                </div>
+
+                <div class="p-6 sm:p-8 space-y-6">
+                    <!-- Target Question text -->
+                    <p id="target-question-text" class="text-lg font-bold text-slate-800 leading-relaxed">
+                        ข้อใดคือสาเหตุหลักของการพัฒนาเทคโนโลยีรถยนต์ไฟฟ้าขึ้นมาทดแทนระบบรถใช้น้ำมัน?
+                    </p>
+
+                    <!-- Selection list (A, B, C, D) -->
+                    <div class="space-y-3.5" id="options-container">
+                        <!-- Dynamic choices generated by JavaScript -->
+                    </div>
+                    
+                    <!-- Explanation/Feedback Panel -->
+                    <div id="explanation-panel" class="hidden p-4 rounded-2xl border transition-all duration-300 flex items-start gap-3">
+                        <span id="explanation-icon" class="text-xl"></span>
+                        <div>
+                            <h5 id="explanation-title" class="font-bold text-sm"></h5>
+                            <p id="explanation-desc" class="text-xs mt-1 leading-relaxed text-slate-600"></p>
+                        </div>
+                    </div>
+
+                    <!-- Foot Control Buttons -->
+                    <div class="flex justify-end pt-4 border-t border-slate-100">
+                        <button id="next-question-btn" disabled onclick="handleNextQuestion()" class="px-6 py-2.5 bg-slate-200 text-slate-500 rounded-xl font-bold text-sm transition-all duration-200 hover:bg-primary-600 hover:text-white disabled:pointer-events-none disabled:opacity-50 flex items-center gap-1.5">
+                            ข้อถัดไป <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Screen 3: Quiz Result Scorecard -->
+            <div id="quiz-result-screen" class="hidden bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm max-w-2xl mx-auto text-center space-y-8">
+                <div class="space-y-2">
+                    <span id="result-trophy" class="text-5xl inline-block animate-bounce">🏆</span>
+                    <h3 class="text-2xl sm:text-3xl font-extrabold text-indigo-950">ส่งแบบทดสอบเรียบร้อย!</h3>
+                    <p class="text-sm text-slate-500">ผลการประเมินวิชาการออกแบบและเทคโนโลยี 2 (ว22104)</p>
+                </div>
+
+                <!-- Circular Big Score Board -->
+                <div class="relative w-40 h-40 mx-auto bg-slate-50 rounded-full border-4 border-dashed border-indigo-200 flex flex-col items-center justify-center shadow-inner">
+                    <p class="text-[10px] text-indigo-500 uppercase font-bold tracking-widest">คะแนนสอบ</p>
+                    <p id="result-score-ratio" class="text-4xl font-black text-indigo-600 mt-1">8/10</p>
+                    <p id="result-percentage" class="text-xs text-slate-500 mt-0.5">(ผ่านการประเมิน)</p>
+                </div>
+
+                <!-- Custom Performance Feedback Badge -->
+                <div class="p-4 rounded-2xl max-w-md mx-auto border" id="performance-feedback-card">
+                    <h4 id="performance-title" class="font-bold text-sm text-slate-800"></h4>
+                    <p id="performance-description" class="text-xs text-slate-500 mt-1 leading-relaxed"></p>
+                </div>
+
+                <!-- Action Button -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button onclick="restartQuiz()" class="px-6 py-3 bg-indigo-50 text-indigo-600 border border-indigo-100 hover:bg-indigo-100/50 rounded-xl font-bold text-sm transition flex items-center justify-center gap-2 w-full sm:w-auto">
+                        <i class="fa-solid fa-rotate-left"></i> ทำแบบทดสอบอีกครั้ง
+                    </button>
+                    <button onclick="switchTab('content')" class="px-6 py-3 bg-primary-600 text-white hover:bg-primary-700 rounded-xl font-bold text-sm transition flex items-center justify-center gap-2 w-full sm:w-auto shadow-md shadow-indigo-600/10">
+                        <i class="fa-solid fa-house"></i> กลับสู่เนื้อหาหลัก
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer of the Web Application -->
+    <footer class="bg-white border-t border-slate-200 py-6 text-center mt-auto">
+        <p class="text-xs text-slate-500">
+            © 2026 บทเรียนระบบดิจิทัล ว22104 | โรงเรียนหาดใหญ่รัฐประชาสรรค์
+        </p>
+        <p class="text-[10px] text-slate-400 mt-1.5">
+            พัฒนาและจัดสรรเนื้อหาตามหลักสูตรสถาบันพัฒนาคุณภาพวิชาการโดย ว่าที่ ร.ต.สุทธิพงศ์ โหดหมาน (สพม.สงขลา สตูล)
+        </p>
+    </footer>
+
+    <script>
+        // ----------------------------------------------------
+        // Global Datastores
+        // ----------------------------------------------------
+
+        // FLASHCARDS DATA (10 Cards)
+        const FLASHCARDS = [
+            { q: "ปัจจัยพื้นฐานที่สุดที่ทำให้มนุษย์คิดค้นและพัฒนาเทคโนโลยีใหม่ๆ ขึ้นมาคืออะไร?", a: "ความต้องการเพื่อความรอดปลอดภัย การแก้ไขปัญหาความเจ็บป่วย และการอำนวยความสะดวกในชีวิตประจำวัน" },
+            { q: "ข้อแตกต่างสำคัญและเห็นภาพชัดเจนที่สุดระหว่างเกวียนในอดีตกับรถยนต์ในปัจจุบันคือเรื่องใด?", a: "ความรวดเร็วในการเคลื่อนย้ายขนส่ง และระดับความทุ่นแรงในการทำงาน" },
+            { q: "การเปลี่ยนการใช้อีเมล (E-mail) แทนจดหมายกระดาษดั้งเดิม ช่วยตอบโจทย์ในมิติใดมากที่สุด?", a: "ความประหยัดและรวดเร็วสูงสุด รวมถึงลดการตัดไม้มาทำเป็นเยื่อกระดาษ" },
+            { q: "ในการปฏิวัติอุตสาหกรรมในยุคแรก มนุษย์เปลี่ยนจากการใช้แรงงานคนและสัตว์มาใช้อะไรทดแทน?", a: "เครื่องจักรพลังงานไอน้ำ ที่ช่วยให้ผลิตสินค้าพร้อมกันได้ในจำนวนมหาศาล" },
+            { q: "นวัตกรรม (Innovation) และสิ่งประดิษฐ์ (Invention) มีความแตกต่างกันในจุดสำคัญคืออะไร?", a: "นวัตกรรมคือสิ่งประดิษฐ์หรือแนวคิดใหม่ที่ผ่านการทดลองเชิงพาณิชย์และสามารถสร้างมูลค่าทางเศรษฐกิจได้จริง" },
+            { q: "การเปลี่ยนระบบเก็บข้อมูลบนแฟ้มเอกสารไปเป็นระบบเก็บข้อมูลคลาวด์ (Cloud Network) มีประโยชน์หลักอย่างไร?", a: "สามารถเข้าถึงข้อมูลจากจุดใดของโลกก็ได้ผ่านเครือข่ายอินเทอร์เน็ต และลดปัญหากระดาษชำรุดเสียหาย" },
+            { q: "วิชาการแขนง 'วัสดุศาสตร์' (Materials Science) ส่งผลดีและขับเคลื่อนการออกแบบผลิตภัณฑ์ในยุคปัจจุบันอย่างไร?", a: "ทำให้วิศวกรได้วัสดุชนิดใหม่ที่มีคุณสมบัติเฉพาะที่ยอดเยี่ยม เช่น น้ำหนักเบาเป็นพิเศษ แข็งแรงสูง และนำกระแสไฟได้รวดเร็วขึ้น" },
+            { q: "ข้อเสียหรือความท้าทายที่ร้ายแรงที่สุดอันเป็นผลพวงมาจากการเปลี่ยนแปลงทางเทคโนโลยีอันรวดเร็วคืออะไร?", a: "การสะสมปริมาณขยะอิเล็กทรอนิกส์ (E-Waste) ที่เต็มไปด้วยสารโลหะหนักและกำจัดได้ยาก" },
+            { q: "ทำไมก่อนที่เราจะเลือกรับหรือยอมรับเทคโนโลยีตัวใดตัวหนึ่งเข้ามาในสังคม เราจึงจำเป็นต้องทำประเมินผลกระทบก่อน?", a: "เพื่อเฝ้าระวัง หลีกเลี่ยง และบรรเทาผลกระทบเชิงลบที่จะเกิดขึ้นต่อร่างกาย สังคม วัฒนธรรม และสิ่งแวดล้อมรอบตัว" },
+            { q: "ทิศทางการพัฒนาเทคโนโลยีในทศวรรษหน้าเน้นหลักการใดเป็นพิเศษ?", a: "ความยั่งยืน (Sustainability) และการเลือกใช้วัสดุรีไซเคิลและพลังงานหมุนเวียนที่ไม่ทำลายชั้นบรรยากาศโลก" }
+        ];
+
+        // VOCABULARY DATA (15 words)
+        const VOCABULARY = [
+            { word: "Technology", trans: "เทคโนโลยี", desc: "การใช้ความรู้ ทรัพยากร เพื่อพัฒนาวิธีการหรือสิ่งประดิษฐ์ขึ้นมาแก้ปัญหามนุษย์" },
+            { word: "Innovation", trans: "นวัตกรรม", desc: "การต่อยอดความสร้างสรรค์ขึ้นเป็นแนวทางหรือผลผลิตเชิงพาณิชย์ที่มีมูลค่าสูง" },
+            { word: "Efficiency", trans: "ประสิทธิภาพ", desc: "อัตราส่วนผลลัพธ์ที่ทำได้เทียบกับทรัพยากรที่ต้องสูญเสียไป เพื่อให้ได้งานคุณภาพที่สุด" },
+            { word: "Sustainability", trans: "ความยั่งยืน", desc: "ความสามารถในการพัฒนาที่ตอบโจทย์คนรุ่นปัจจุบันโดยไม่ทำลายทรัพยากรของคนในอนาคต" },
+            { word: "Transformation", trans: "การเปลี่ยนผ่าน", desc: "กระบวนการปรับโฉม ยกระดับ และเปลี่ยนวิธีการทำงานจากสิ่งเดิมไปสู่อีกสิ่งที่ดีกว่า" },
+            { word: "Automation", trans: "ระบบอัตโนมัติ", desc: "กระบวนการใช้เครื่องจักร อุปกรณ์อิเล็กทรอนิกส์ทำงานแทนมนุษย์ตามเวลาที่ตั้งโปรแกรมไว้" },
+            { word: "Prototype", trans: "แบบจำลองต้นแบบ", desc: "แบบโครงสร้างแรกเริ่มที่สร้างขึ้นเพื่อทดสอบแนวคิด ข้อผิดพลาดก่อนไปพัฒนาจริง" },
+            { word: "Engineering", trans: "วิศวกรรมศาสตร์", desc: "การนำความรู้ด้านคณิตศาสตร์และวิทยาศาสตร์มาประยุกต์ใช้อย่างเป็นระบบในภาคอุตสาหกรรม" },
+            { word: "Infrastructure", trans: "โครงสร้างพื้นฐาน", desc: "ระบบโครงสร้างสนับสนุนระบบขนส่ง ไฟฟ้า โทรคมนาคม ซึ่งเป็นสิ่งจำเป็นต่อระบบเศรษฐกิจ" },
+            { word: "Connectivity", trans: "การเชื่อมต่อ", desc: "ขีดความสามารถของระบบ คอมพิวเตอร์ หรืออุปกรณ์ต่างๆ ในการโต้ตอบและรับส่งสัญญาณเข้าหากัน" },
+            { word: "Design Process", trans: "กระบวนการออกแบบ", desc: "ขั้นตอนการสร้างสรรค์อย่างเป็นแบบแผนเพื่อวิเคราะห์ หาแนวคิด สรุป และสร้างผลงานชิ้นงานแก้ปัญหา" },
+            { word: "Artificial Intelligence", trans: "ปัญญาประดิษฐ์", desc: "ระบบโปรแกรมคอมพิวเตอร์อัจฉริยะที่สามารถประมวลผล สรุป ตรรกะ และวิเคราะห์ข้อมูลเหมือนมนุษย์" },
+            { word: "Renewable Energy", trans: "พลังงานหมุนเวียน", desc: "แหล่งผลิตพลังงานสะอาดตามธรรมชาติ เช่น แสงอาทิตย์ ลม น้ำ ซึ่งไม่มีวันหมดสิ้นและไม่ปล่อยก๊าซพิษ" },
+            { word: "Electronic Waste", trans: "ขยะอิเล็กทรอนิกส์", desc: "ซากอุปกรณ์สารพัดชนิดที่เป็นอุปกรณ์คอมพิวเตอร์ โทรศัพท์ แบตเตอรี่เสื่อมที่ต้องคัดแยกวิธีกำจัดพิเศษ" },
+            { word: "Nanotechnology", trans: "นาโนเทคโนโลยี", desc: "การออกแบบ จัดการ สังเคราะห์วัสดุในระดับความกว้างที่เล็กระดับสเกลนาโนเมตร" }
+        ];
+
+        // QUIZ QUESTIONS (10 items)
+        const QUIZ_QUESTIONS = [
+            {
+                q: "1. ปัจจัยพื้นฐานและสำคัญที่สุดในการผลักดันให้เกิดการเปลี่ยนแปลงเทคโนโลยีคือข้อใด?",
+                opts: ["ก. ความต้องการและความสะดวกสบายของมนุษย์", "ข. ความจำเป็นในการสะสมผลกำไรทางเศรษฐกิจ", "ค. การเลียนแบบเทคโนโลยีจากต่างประเทศ", "ง. ความก้าวหน้าของบริษัทผู้ผลิตชิ้นส่วนอิเล็กทรอนิกส์"],
+                ans: 0,
+                explain: "ความต้องการในการแก้ปัญหา การทุ่นแรง และเพื่อความรอดปลอดภัยของมนุษย์เป็นจุดเริ่มต้นในการเปลี่ยนแปลงเทคโนโลยีมาโดยตลอด"
+            },
+            {
+                q: "2. การเปลี่ยนแปลงจากการพิมพ์เอกสารด้วยเครื่องพิมพ์ดีดมาใช้คอมพิวเตอร์ ช่วยเพิ่มประสิทธิภาพในด้านใดเด่นชัดที่สุด?",
+                opts: ["ก. ลดราคาค่าเครื่องเขียน", "ข. ความสวยงามของการออกแบบภายนอกเครื่องคอมพิวเตอร์", "ค. การปรับแต่ง แก้ไข คัดลอก และการจัดเก็บข้อมูลได้อย่างไร้ขีดจำกัด", "ง. ช่วยให้ทุกคนสามารถเรียนรู้วิทยาศาสตร์ได้อย่างรวดเร็ว"],
+                ans: 2,
+                explain: "คอมพิวเตอร์ช่วยให้สามารถเข้าควบคุม แก้ไข จัดเตรียม พิมพ์ซ้ำ และจัดเก็บเอกสารทางดิจิทัลได้ทันใจ แตกต่างจากเครื่องพิมพ์ดีดโบราณ"
+            },
+            {
+                q: "3. ข้อใดคือความหมายของคำว่า 'นวัตกรรม' (Innovation) ตามหลักสูตรการออกแบบและเทคโนโลยี?",
+                opts: ["ก. การลอกเลียนแบบเทคโนโลยีเก่าที่หมดสัญญาสิทธิบัตรแล้ว", "ข. การนำแนวคิดหรือสิ่งประดิษฐ์ใหม่มาต่อยอดปรับปรุงเพื่อสร้างประโยชน์และมูลค่าเพิ่ม", "ค. การสร้างระบบปฏิบัติการใหม่ที่ไม่เคยมีสูตรการคำนวณทางคณิตศาสตร์ใดรองรับมาก่อน", "ง. การจัดแสดงผลงานศิลปะโบราณประยุกต์"],
+                ans: 1,
+                explain: "นวัตกรรมคือสิ่งประดิษฐ์หรือความคิดสร้างสรรค์ใหม่ที่ถูกนำเสนอในเชิงเศรษฐกิจ-สังคม มีการใช้งานจริงและให้คุณค่าเหนือกระบวนการดั้งเดิม"
+            },
+            {
+                q: "4. การที่อุตสาหกรรมการผลิตหันมาเปลี่ยนใช้อุปกรณ์ระบบอัตโนมัติ (Automation) ส่งผลกระทบด้านบวกอย่างไร?",
+                opts: ["ก. ลดสัดส่วนความเสี่ยงในการบาดเจ็บของแรงงานคนจากจุดอันตราย และเพิ่มกำลังการผลิต", "ข. บังคับให้มนุษย์ทุกคนหันไปประกอบอาชีพด้านเกษตรกรรมทางอ้อม", "ค. ลดความจำเป็นในการใช้อินเทอร์เน็ตในการประสานเครือข่ายส่งสินค้า", "ง. สินค้าขายยากขึ้นเนื่องจากระบบหุ่นยนต์ออกแบบไม่สวยเท่ามนุษย์"],
+                ans: 0,
+                explain: "ระบบอัตโนมัติทำงานด้วยความคงเส้นคงวา แม่นยำ และทำงานทดแทนแรงงานในจุดเสี่ยงอันตราย เช่น เตาหลอมเหลว สารเคมีพิษ ได้ดีมาก"
+            },
+            {
+                q: "5. การเลือกใช้เทคโนโลยีที่มุ่งเน้นความยั่งยืน (Sustainability) ข้อใดถือเป็นสิ่งที่ต้องคำนึงถึงมากที่สุด?",
+                opts: ["ก. ความสวยงามสะดุดตาของบรรจุภัณฑ์ภายนอก", "ข. การใช้วัสดุและระบบที่เป็นมิตรต่อสิ่งแวดล้อม และผลกระทบต่อสิ่งมีชีวิตในระยะยาว", "ค. ยี่ห้อของผลิตภัณฑ์ที่มีราคาแพงที่สุดเท่านั้น", "ง. ความซับซ้อนของกลไกภายในที่ทำงานได้ยากที่สุด"],
+                ans: 1,
+                explain: "ความยั่งยืนคือการไม่ทำร้ายขีดความสามารถในการอยู่รอดของธรรมชาติและมนุษย์รุ่นหลัง ดังนั้นต้องคำนึงถึงสิ่งแวดล้อมและทรัพยากรเสมอ"
+            },
+            {
+                q: "6. แบตเตอรี่ของรถยนต์ระบบไฟฟ้าที่หมดอายุการใช้งานแล้ว ถือเป็นเศษวัสดุประเภทใด?",
+                opts: ["ก. ขยะอินทรีย์รีไซเคิลได้", "ข. ขยะอิเล็กทรอนิกส์ (Electronic Waste) ที่ต้องการกระบวนการจัดเก็บรีไซเคิลเป็นพิเศษ", "ค. ขยะทั่วไปในครัวเรือน", "ง. แร่วัตถุดิบมีราคาสูงสามารถทิ้งปะปนในดินเพื่อบำรุงพืชพรรณได้"],
+                ans: 1,
+                explain: "ซากอุปกรณ์อิเล็กทรอนิกส์ แบตเตอรี่ ชิปเซ็ต จัดเป็นขยะอิเล็กทรอนิกส์ที่มีสารเคมีอันตรายบรรจุอยู่ ต้องได้รับการบำบัดพิเศษไม่ให้ปนเปื้อนดินและแหล่งน้ำ"
+            },
+            {
+                q: "7. การพัฒนา 'เทคโนโลยียานพาหนะไฟฟ้า (EV)' เป็นการตอบสนองความต้องการเพื่อขจัดปัญหาใดในอดีต?",
+                opts: ["ก. การใช้เวลาเดินทางที่นานเกินกว่า 2 ชั่วโมง", "ข. การปล่อยควันและก๊าซพิษที่เป็นต้นเหตุของภาวะเรือนกระจกจากรถเครื่องยนต์สันดาปภายใน", "ค. เพื่อลดปริมาณการใช้สายไฟฟ้าในเขตชุมชนหลวง", "ง. ปัญหาการไม่มีระบบนำทางด้วยแผนที่ GPS บนโทรศัพท์มือถือ"],
+                ans: 1,
+                explain: "รถยนต์ไฟฟ้า (EV) ใช้พลังงานจากระบบแบตเตอรี่ขับเคลื่อนมอเตอร์ ไร้ซึ่งท่อไอเสีย จึงปล่อยมลพิษทางอากาศ (Zero Emission) ในท้องถนน"
+            },
+            {
+                q: "8. กระบวนการออกแบบเชิงวิศวกรรม (Engineering Design Process) เข้ามามีส่วนช่วยในการขับเคลื่อนเทคโนโลยีใหม่อย่างไร?",
+                opts: ["ก. ป้องกันไม่ให้มีการทับซ้อนไอเดียของผู้อื่นโดยเด็ดขาด", "ข. นำระบบระเบียบขั้นตอนมาคิดวิเคราะห์ทดสอบ เพื่อให้ได้ชิ้นงานที่ตรงเป้าหมายแก้ไขปัญหาได้แม่นยำที่สุด", "ค. กำจัดการปรับแก้ของชิ้นงานให้เหลือความผิดพลาดเป็นศูนย์ตั้งแต่เริ่มร่างกระดาษครั้งแรก", "ง. บังคับใช้เกณฑ์ราคาที่ถูกที่สุดในการสรรหาพาร์ตเนอร์ผลิตชิ้นส่วน"],
+                ans: 1,
+                explain: "กระบวนการออกแบบจะมีการทำงานแบบเป็นขั้นตอน มีการจำกัดวงขอบเขตปัญหา ทดสอบต้นแบบ ปรับปรุงซ้ำ จนได้แนวทางแก้ปัญหารัดกุมที่สุด"
+            },
+            {
+                q: "9. ปัจจัยทาง 'วัสดุศาสตร์' ใดที่ทำให้สมาร์ตโฟนในปัจจุบันมีขนาดบางลง น้ำหนักเบาลง แต่มีความทนทานและเร็วขึ้น?",
+                opts: ["ก. การใช้วัสดุธรรมชาติจำพวกไม้ไผ่สานฝังลงบนวงจรหลัก", "ข. ความก้าวหน้าของวงจรเซมิคอนดักเตอร์นาโนเมตร วัสดุกราฟีน และอลูมิเนียมอัลลอยด์เกรดอากาศยาน", "ค. การเคลือบสารสีสะท้อนแสงบนขอบบอดี้ตัวเครื่องภายนอก", "ง. การลดชิ้นส่วนประมวลผลให้เหลือต่ำสุด"],
+                ans: 1,
+                explain: "ชิ้นงานที่มีขนาดเล็กและเบานั้นเกิดจากการวิจัยเซมิคอนดักเตอร์ที่จัดเก็บทรานซิสเตอร์ได้เล็กลงในระดับนาโน และใช้วัสดุประกอบที่เบาแต่แกร่งสูง"
+            },
+            {
+                q: "10. ความพยายามในการลดปัญหาสภาพภูมิอากาศเปลี่ยนแปลง (Climate Change) ส่งผลต่อเทคโนโลยีพลังงานในลักษณะใด?",
+                opts: ["ก. การเร่งเพิ่มสัดส่วนโรงไฟฟ้านิวเคลียร์ในเขตที่ดินชนบท", "ข. การเปลี่ยนผ่านการผลิตไฟฟ้าจากเชื้อเพลิงถ่านหินหันไปใช้พลังงานหมุนเวียน เช่น โซลาร์เซลล์ และกังหันลม", "ค. การประกาศห้ามใช้เครื่องปรับอากาศและเครื่องแช่แข็งอาหารในภาคที่อยู่อาศัย", "ง. บังคับห้ามทำกิจกรรมส่งออกผลผลิตการเกษตรออกนอกประเทศ"],
+                ans: 1,
+                explain: "การแก้ไขปัญหาภาวะโลกร้อนส่งผลให้มนุษย์เปลี่ยนเทคโนโลยีการผลิตไฟฟ้าแบบเติมเชื้อเพลิงฟอสซิลที่สร้างเขม่าและ CO2 หันไปใช้พลังงานสะอาดนั่นเอง"
+            }
+        ];
+
+        // State Store variables
+        let activeTab = 'content';
+        let currentCardIndex = 0;
+        let isCardFlipped = false;
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+        let selectedAnswers = Array(QUIZ_QUESTIONS.length).fill(null);
+        let hasAnsweredCurrentQuestion = false;
+
+        // ----------------------------------------------------
+        // App Lifecycle & DOM Loading Event
+        // ----------------------------------------------------
+        window.onload = function() {
+            // Setup components
+            renderVocabulary(VOCABULARY);
+            updateFlashcard();
+            resetQuizState();
+        };
+
+        // ----------------------------------------------------
+        // Tab system navigation controllers
+        // ----------------------------------------------------
+        function switchTab(tabId) {
+            // Update UI state
+            activeTab = tabId;
+            
+            // Hide all tab content elements
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+            
+            // Show target panel
+            const targetPanel = document.getElementById(`panel-${tabId}`);
+            if (targetPanel) {
+                targetPanel.classList.remove('hidden');
+            }
+
+            // Remove highlight classes on tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-primary-50', 'text-primary-600', 'border', 'border-primary-100');
+                btn.classList.add('text-slate-500', 'hover:text-slate-800', 'hover:bg-slate-100');
+            });
+
+            // Add highlight onto selected tab button
+            const selectedBtn = document.getElementById(`tab-${tabId}`);
+            if (selectedBtn) {
+                selectedBtn.classList.remove('text-slate-500', 'hover:text-slate-800', 'hover:bg-slate-100');
+                selectedBtn.classList.add('bg-primary-50', 'text-primary-600', 'border', 'border-primary-100');
+            }
+        }
+
+        // ----------------------------------------------------
+        // Flashcard controller functions
+        // ----------------------------------------------------
+        function updateFlashcard() {
+            const card = FLASHCARDS[currentCardIndex];
+            
+            // Revert cards visual orientation first
+            isCardFlipped = false;
+            document.getElementById('flashcard-inner').classList.remove('rotate-y-180');
+            
+            // Inject values
+            document.getElementById('flashcard-front-text').textContent = card.q;
+            document.getElementById('flashcard-back-text').textContent = card.a;
+            
+            // Progress tracker rendering
+            document.getElementById('card-progress').textContent = `${currentCardIndex + 1} / ${FLASHCARDS.length}`;
+        }
+
+        function flipCard() {
+            isCardFlipped = !isCardFlipped;
+            const inner = document.getElementById('flashcard-inner');
+            if (isCardFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            currentCardIndex = (currentCardIndex + 1) % FLASHCARDS.length;
+            updateFlashcard();
+        }
+
+        function prevCard() {
+            currentCardIndex = (currentCardIndex - 1 + FLASHCARDS.length) % FLASHCARDS.length;
+            updateFlashcard();
+        }
+
+        function shuffleCards() {
+            // Shuffle array using Durstenfeld/Fisher-Yates style
+            for (let i = FLASHCARDS.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [FLASHCARDS[i], FLASHCARDS[j]] = [FLASHCARDS[j], FLASHCARDS[i]];
+            }
+            currentCardIndex = 0;
+            updateFlashcard();
+        }
+
+        // ----------------------------------------------------
+        // Vocabulary directory controllers
+        // ----------------------------------------------------
+        function renderVocabulary(items) {
+            const grid = document.getElementById('vocab-grid');
+            grid.innerHTML = '';
+            
+            if (items.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-8 text-center text-slate-400">
+                        <i class="fa-solid fa-face-frown text-3xl mb-2"></i>
+                        <p class="text-sm">ไม่พบคำศัพท์ที่คุณต้องการหา ลองค้นหาใหม่อีกครั้ง</p>
+                    </div>
+                `;
+                return;
+            }
+
+            items.forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 rounded-2xl shadow-sm border border-slate-200/80 hover:border-primary-200 hover:shadow transition-all duration-200 flex flex-col justify-between";
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2 mb-3">
+                            <span class="font-bold text-indigo-900 tracking-wide text-base">${item.word}</span>
+                            <button onclick="speakWord('${item.word}')" class="w-8 h-8 rounded-full bg-indigo-50 hover:bg-indigo-100 text-primary-500 transition-colors flex items-center justify-center text-xs shadow-inner" title="ฟังเสียงอ่านภาษาอังกฤษ">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
+                        </div>
+                        <p class="text-sm font-bold text-slate-800 mb-1.5"><i class="fa-solid fa-language text-slate-400 mr-1.5"></i> ${item.trans}</p>
+                        <p class="text-xs text-slate-500 leading-relaxed">${item.desc}</p>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterVocab() {
+            const searchVal = document.getElementById('vocab-search').value.toLowerCase().trim();
+            const filtered = VOCABULARY.filter(item => {
+                return item.word.toLowerCase().includes(searchVal) || 
+                       item.trans.toLowerCase().includes(searchVal) || 
+                       item.desc.toLowerCase().includes(searchVal);
+            });
+            renderVocabulary(filtered);
+        }
+
+        function speakWord(text) {
+            // Check browser support for TextToSpeech Synthesis
+            if ('speechSynthesis' in window) {
+                // Cancel any ongoing speaking
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.95; // slightly slower for educational clear articulation
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // ----------------------------------------------------
+        // Quiz engine functions & actions
+        // ----------------------------------------------------
+        function resetQuizState() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            selectedAnswers = Array(QUIZ_QUESTIONS.length).fill(null);
+            hasAnsweredCurrentQuestion = false;
+
+            // Interface Screen management Reset
+            document.getElementById('quiz-intro-screen').classList.remove('hidden');
+            document.getElementById('quiz-question-screen').classList.add('hidden');
+            document.getElementById('quiz-result-screen').classList.add('hidden');
+        }
+
+        function startQuiz() {
+            // Shuffle Quiz items before starting to ensure unique playthroughs if user restarts
+            for (let i = QUIZ_QUESTIONS.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [QUIZ_QUESTIONS[i], QUIZ_QUESTIONS[j]] = [QUIZ_QUESTIONS[j], QUIZ_QUESTIONS[i]];
+            }
+            
+            // Clear past stats
+            currentQuizIndex = 0;
+            quizScore = 0;
+            selectedAnswers = Array(QUIZ_QUESTIONS.length).fill(null);
+            hasAnsweredCurrentQuestion = false;
+
+            document.getElementById('quiz-intro-screen').classList.add('hidden');
+            document.getElementById('quiz-question-screen').classList.remove('hidden');
+            document.getElementById('quiz-result-screen').classList.add('hidden');
+            
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            hasAnsweredCurrentQuestion = false;
+            const qData = QUIZ_QUESTIONS[currentQuizIndex];
+            
+            // Reset scoreboard indicator
+            document.getElementById('quiz-score-badge').textContent = `คะแนนที่ได้: ${quizScore}`;
+            
+            // Set Progress headers
+            document.getElementById('question-number-title').textContent = `ข้อที่ ${currentQuizIndex + 1} จาก ${QUIZ_QUESTIONS.length}`;
+            const pct = ((currentQuizIndex + 1) / QUIZ_QUESTIONS.length) * 100;
+            document.getElementById('quiz-progress-inner').style.width = `${pct}%`;
+
+            // Question Text
+            document.getElementById('target-question-text').textContent = qData.q;
+
+            // Reset selection buttons lists
+            const optionsBox = document.getElementById('options-container');
+            optionsBox.innerHTML = '';
+
+            // Clean Explanation panel
+            const explainPanel = document.getElementById('explanation-panel');
+            explainPanel.classList.add('hidden');
+
+            // Draw selectable Option row layouts
+            qData.opts.forEach((optText, oIndex) => {
+                const optBtn = document.createElement('button');
+                optBtn.type = "button";
+                optBtn.onclick = () => selectQuizOption(oIndex);
+                optBtn.id = `opt-item-${oIndex}`;
+                optBtn.className = "w-full text-left p-4 rounded-xl border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/50 flex items-center justify-between transition-all duration-200 font-medium text-sm text-slate-700";
+                
+                optBtn.innerHTML = `
+                    <span>${optText}</span>
+                    <span id="opt-icon-${oIndex}" class="w-6 h-6 rounded-full border border-slate-200 flex items-center justify-center text-xs text-slate-400 bg-white">
+                        ${String.fromCharCode(65 + oIndex)}
+                    </span>
+                `;
+                optionsBox.appendChild(optBtn);
+            });
+
+            // Lock Next Button state till selection
+            const nextBtn = document.getElementById('next-question-btn');
+            nextBtn.disabled = true;
+            nextBtn.classList.replace('bg-primary-600', 'bg-slate-200');
+            nextBtn.classList.replace('text-white', 'text-slate-500');
+        }
+
+        function selectQuizOption(optionIndex) {
+            // Block repeat clicking once chosen
+            if (hasAnsweredCurrentQuestion) return;
+            
+            hasAnsweredCurrentQuestion = true;
+            selectedAnswers[currentQuizIndex] = optionIndex;
+            
+            const qData = QUIZ_QUESTIONS[currentQuizIndex];
+            const isCorrect = (optionIndex === qData.ans);
+
+            // Compute score modifier
+            if (isCorrect) {
+                quizScore++;
+                document.getElementById('quiz-score-badge').textContent = `คะแนนที่ได้: ${quizScore}`;
+            }
+
+            // Loop to color code all buttons
+            qData.opts.forEach((_, oIdx) => {
+                const row = document.getElementById(`opt-item-${oIdx}`);
+                const icon = document.getElementById(`opt-icon-${oIdx}`);
+                
+                // Disable button
+                row.classList.remove('hover:border-indigo-400', 'hover:bg-indigo-50/50');
+                row.classList.add('cursor-default');
+
+                if (oIdx === qData.ans) {
+                    // This is the correct answer
+                    row.classList.replace('border-slate-200', 'border-emerald-500');
+                    row.classList.add('bg-emerald-50', 'text-emerald-900');
+                    icon.className = "w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs";
+                    icon.innerHTML = `<i class="fa-solid fa-check"></i>`;
+                } else if (oIdx === optionIndex) {
+                    // Selected but wrong answer
+                    row.classList.replace('border-slate-200', 'border-rose-500');
+                    row.classList.add('bg-rose-50', 'text-rose-900');
+                    icon.className = "w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs";
+                    icon.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
+                } else {
+                    row.classList.add('opacity-50');
+                }
+            });
+
+            // Reveal explanation section
+            const explainPanel = document.getElementById('explanation-panel');
+            const explainIcon = document.getElementById('explanation-icon');
+            const explainTitle = document.getElementById('explanation-title');
+            const explainDesc = document.getElementById('explanation-desc');
+
+            explainPanel.classList.remove('hidden');
+            explainDesc.textContent = qData.explain;
+
+            if (isCorrect) {
+                explainPanel.className = "p-4 rounded-2xl border border-emerald-100 bg-emerald-50/50 flex items-start gap-3 transition-all duration-300";
+                explainIcon.className = "text-xl text-emerald-600";
+                explainIcon.innerHTML = `<i class="fa-solid fa-circle-check"></i>`;
+                explainTitle.className = "font-bold text-sm text-emerald-900";
+                explainTitle.textContent = "ตอบถูกต้อง! ยอดเยี่ยมมากครับ";
+            } else {
+                explainPanel.className = "p-4 rounded-2xl border border-rose-100 bg-rose-50/50 flex items-start gap-3 transition-all duration-300";
+                explainIcon.className = "text-xl text-rose-600";
+                explainIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i>`;
+                explainTitle.className = "font-bold text-sm text-rose-900";
+                explainTitle.textContent = "ยังไม่ถูกนะข้อนี้ มารู้เฉลยกัน...";
+            }
+
+            // Enable Next Button
+            const nextBtn = document.getElementById('next-question-btn');
+            nextBtn.disabled = false;
+            nextBtn.classList.replace('bg-slate-200', 'bg-primary-600');
+            nextBtn.classList.replace('text-slate-500', 'text-white');
+        }
+
+        function handleNextQuestion() {
+            if (currentQuizIndex + 1 < QUIZ_QUESTIONS.length) {
+                currentQuizIndex++;
+                loadQuizQuestion();
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-intro-screen').classList.add('hidden');
+            document.getElementById('quiz-question-screen').classList.add('hidden');
+            document.getElementById('quiz-result-screen').classList.remove('hidden');
+
+            // Draw Score stats
+            document.getElementById('result-score-ratio').textContent = `${quizScore} / ${QUIZ_QUESTIONS.length}`;
+            
+            const pct = (quizScore / QUIZ_QUESTIONS.length) * 100;
+            document.getElementById('result-percentage').textContent = `(${pct}% ของคะแนนเต็ม)`;
+
+            const feedbackCard = document.getElementById('performance-feedback-card');
+            const feedbackTitle = document.getElementById('performance-title');
+            const feedbackDesc = document.getElementById('performance-description');
+            const trophy = document.getElementById('result-trophy');
+
+            if (quizScore >= 8) {
+                trophy.textContent = "🏆";
+                feedbackCard.className = "p-4 rounded-2xl max-w-md mx-auto border border-emerald-100 bg-emerald-50/50";
+                feedbackTitle.className = "font-bold text-sm text-emerald-900";
+                feedbackTitle.textContent = "ระดับความเป็นเลิศ: ยอดเยี่ยมมาก (Excellent)";
+                feedbackDesc.textContent = "ยินดีด้วยครับ! คุณครูสุทธิพงศ์ประเมินว่าคุณมีความเข้าใจลึกซึ้งเกี่ยวกับการเปลี่ยนแปลงทางเทคโนโลยีเป็นอย่างดี มีศักยภาพพร้อมต่อยอดนวัตกรรม!";
+            } else if (quizScore >= 5) {
+                trophy.textContent = "👏";
+                feedbackCard.className = "p-4 rounded-2xl max-w-md mx-auto border border-amber-100 bg-amber-50/50";
+                feedbackTitle.className = "font-bold text-sm text-amber-900";
+                feedbackTitle.textContent = "ระดับความเป็นเลิศ: ผ่านการประเมิน (Good)";
+                feedbackDesc.textContent = "ทำได้ดีแล้วครับ! แต่อาจมีบางส่วนของเนื้อหาหลักหรือแนวโน้มการเปลี่ยนแปลงที่ต้องทบทวนศึกษาเพิ่มอีกนิดเพื่อเพิ่มความชำนาญ";
+            } else {
+                trophy.textContent = "📖";
+                feedbackCard.className = "p-4 rounded-2xl max-w-md mx-auto border border-rose-100 bg-rose-50/50";
+                feedbackTitle.className = "font-bold text-sm text-rose-900";
+                feedbackTitle.textContent = "ระดับความเป็นเลิศ: ควรปรับปรุง (Needs Review)";
+                feedbackDesc.textContent = "ไม่ต้องท้อแท้ไปครับ! แนะนำให้กลับไปอ่านหัวข้อทฤษฎีบทเรียนหลัก หรือพิจารณาศึกษาแฟลชการ์ดเพิ่ม และมาประเมินใหม่อีกครั้ง";
+            }
+        }
+
+        function restartQuiz() {
+            resetQuizState();
+            startQuiz();
+        }
+    </script>
+</body>
+</html>
